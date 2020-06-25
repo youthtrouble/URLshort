@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"github.com/youthtrouble/URLshort/handlers"
 
+	"github.com/youthtrouble/URLshort/handlers"
 )
 
 func main() {
@@ -12,18 +12,18 @@ func main() {
 
 	// Build the MapHandler using the mux as the fallback
 	pathsToUrls := map[string]string{
-		"/urlshort-godoc": "https://godoc.org/github.com/gophercises/urlshort",
-		"/yaml-godoc":     "https://godoc.org/gopkg.in/yaml.v2",
+		"/mytwitter":  "https://twitter.com/damndeji",
+		"/mylinkedin": "https://www.linkedin.com/in/ayodeji-ajibola/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3B3JRtjxzbRVSv8Ama6RbOmw%3D%3D&licu=urn%3Ali%3Acontrol%3Ad_flagship3_feed-nav.settings_view_profile",
 	}
 	mapHandler := handlers.MapHandler(pathsToUrls, mux)
 
 	// Build the YAMLHandler using the mapHandler as the
 	// fallback
 	yaml := `
-- path: /urlshort
-  url: https://github.com/gophercises/urlshort
-- path: /urlshort-final
-  url: https://github.com/gophercises/urlshort/tree/solution
+- Path: /thisrepo
+  URL: https://github.com/youthtrouble/URLshort.git
+- Path: /mygithub
+  URL: https://github.com/youthtrouble
 `
 	yamlHandler, err := handlers.YAMLHandler([]byte(yaml), mapHandler)
 	if err != nil {

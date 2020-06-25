@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+
 	"gopkg.in/yaml.v2"
 )
 
@@ -25,29 +26,27 @@ func YAMLHandler(yamlBytes []byte, fallback http.Handler) (http.HandlerFunc, err
 	}
 
 	pathsToUrls := buildMap(pathUrls)
-
-	pathsToUrls := map[string] string{}
 	return MapHandler(pathsToUrls, fallback), nil
 }
 
-func buildMap(pathUrls []pathUrl) map[string]string {
+func buildMap(pathUrls []pathURL) map[string]string {
 	pathsToUrls := make(map[string]string)
-	for _, pu := range pathsToUrls {
-		pathsToUrls[pu.Path] = pu.URL
+	for _, s := range pathUrls {
+		pathsToUrls[s.Path] = s.URL
 	}
-	return pathUrls
+	return pathsToUrls
 }
 
-func parseYaml(data []byte) ([]pathUrl, error) {
-	var pathUrls []pathUrl
-	err := yaml.Unmarshal(yamlBytes, &pathUrls) 
+func parseYaml(yamlBytes []byte) ([]pathURL, error) {
+	var pathUrls []pathURL
+	err := yaml.Unmarshal(yamlBytes, &pathUrls)
 	if err != nil {
 		return nil, err
 	}
 	return pathUrls, nil
 }
 
-type pathUrl struct {
-	Path string `yaml:"path"`
-	URL string `yaml:"url"`
+type pathURL struct {
+	Path string `yaml:"Path"`
+	URL  string `yaml:"URL"`
 }
